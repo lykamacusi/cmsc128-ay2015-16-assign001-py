@@ -93,6 +93,7 @@ def wordsToNum(word):
 		
 		if num > 1000000:
 			print("\nNumber out of range!");
+			return num;
 		elif num >= 1:
 			return num;
 		#end of elif statement
@@ -105,12 +106,17 @@ def wordsToNum(word):
 #and the second argument isany of the following: JPY, PHP, USD.
 #The function returns the number in words to its numerical form with a prefix of the currency
 def wordsToCurrency(word, currency):
-	num = wordsToNum(word);
+	num = int(wordsToNum(word));
+	curr = ['JPY', 'PHP', 'USD'];
 	
-	if currency == 'JPY' or currency == 'PHP' or currency == 'USD':
-		print("\nConversion: %s" % (currency + str(num)));
-	else:
-		print("\nCurrency not of scope!")
+	if currency not in curr:	#checks if the currency is not in the list
+		print("\nCurrency not of scope!");
+	#end of if statement
+	
+	if(num >=0  and num <= 1000000):
+		if currency == 'JPY' or currency == 'PHP' or currency == 'USD':
+			print("\nConversion: %s" % (currency + str(num)));
+		#end of if statement
 	#end of if statement
 #End of wordsToCurrency function
 	
@@ -120,12 +126,27 @@ def wordsToCurrency(word, currency):
 #the second is the delimiter to be used (single character only)
 #and third, the number of jumps when the delimiter will appear (from right most going to left most digit)
 def numberDelimited(num, delimiter, jumps):
-	num = str(num);	#converts int to string
-	digits = list(map(str, num));	#splits the number into digits and stores it
-	index = len(num);	#gets the length of the number
-	digits.insert(index-jumps, delimiter);	#insert delimiter into the jumps index from the right
+	if(num < 0 or num > 1000000):
+		print("\nNumber out of range!");
+	#end of if statement
 	
-	print(''.join(digits));	#prints a string in which the elements of the list has been joined by a space
+	if(len(delimiter) > 1):
+		print("\nInvalid number of delimiter!");
+	#end of if statement
+		
+	if(jumps > len(delimiter)):
+		print("\nNumber of jumps greater than length of number!");
+	#end of if statement
+	
+	if(len(delimiter) == 1 and (num >= 0 and num <= 1000000) and (jumps < len(delimiter))):
+		num = str(num);	#converts int to string
+		digits = list(map(str, num));	#splits the number into digits and stores it
+		index = len(num);	#gets the length of the number
+		digits.insert(index-jumps, delimiter);	#insert delimiter into the jumps index from the right
+		
+		print("\nOutput: ");
+		print(''.join(digits));	#prints a string in which the elements of the list has been joined by a space
+	#end of if statement
 #End of numberDelimited function
 
 
@@ -154,13 +175,15 @@ def printMenu():
 				print("\nConversion: ");
 				numToWords(num);
 			else:
-				print("\nNumber not from 0 to 1000000!");
+				print("\nNumber out of range!");
 			#end else statment
 			
 		elif choice == 2:
 			word = input("\nEnter a number(in word form): ");
-			num = wordsToNum(word);
-			print("\nConversion: %d" %num);
+			num = int(wordsToNum(word));
+			
+			if(num >= 0 and num <= 1000000):
+				print("\nConversion: %d" % num);
 			
 		elif choice == 3:
 			word = input("\nEnter a number(in word form): ");
@@ -168,11 +191,10 @@ def printMenu():
 			wordsToCurrency(word, currency);
 			
 		elif choice == 4:
-			num = input("\nEnter a number from 0 to 100000: ");
+			num = int(input("\nEnter a number from 0 to 100000: "));
 			delimiter = input("Enter delimiter(single character only): ");
 			jumps = int(input("Enter number of jumps: "));
 			
-			print("\nOutput: ");
 			numberDelimited(num, delimiter, jumps);
 			
 		elif choice == 0:
