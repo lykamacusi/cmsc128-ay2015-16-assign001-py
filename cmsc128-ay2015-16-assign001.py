@@ -1,9 +1,11 @@
+from itertools import cycle;
+
 #Accepts a whole number from zero(0) to 1 million(1000000 - without commas) and prints the number in word form
 def	numToWords(num):
 	ones = ['','one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 	teens = ['','eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
 	tens = ['', 'ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-	thousands = ['', 'thousand', 'million'];
+	others = ['', 'thousand', 'million'];
 	words = [];	#empty list for storing the string conversion
 	
 	if num == 0:
@@ -41,26 +43,70 @@ def	numToWords(num):
 			#end of else statement
 			
 			if (grp >= 1) and ((hund+ten+o) > 0):	#checks if the number is in the thousands or millions
-				words.append(thousands[grp]);
+				words.append(others[grp]);
 			#end of if statement
 		#end of for loop
 	#end of else statement
 	
 	print(' '.join(words));	#prints a string in which the elements of the list has been joined by a space
+#End of numToWords function
 
 
 #-------------------------------------------------------------------------------------------------------------
 #Accepts a number in word form (from zero to 1 million) and returns it in numerical form
 #Input must be in lowercase
-def wordsToNum():
-	print("Words to number");
+def wordsToNum(word):
+	ones = ['','one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+	teens = ['','eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+	tens = ['', 'ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+	others = ['hundred', 'thousand', 'million'];
+	words = word.split(' ');	#splits the input string of user and stores it in a list
+	num = 0;	#initialize num to 0
+	
+	if word == 'zero':
+		print("\nConversion: %d" % num);
+	else:
+		temp = 0;	#temporary variable for storage of words found in ones
+		for word in words:	#loops through all the words in the list
+			if word == 'negative':
+				print("\nNumber out of range!");
+				break;
+				
+			elif word in ones:
+				temp = ones.index(word);	#value is stored in temp
+				num = num+ones.index(word);
+				
+			elif word in teens:
+				num = num+(teens.index(word)+10);
+				
+			elif word in tens:
+				num = num+(tens.index(word)*10);
+				
+			elif word in others:
+				 if others.index(word) == 0:	#special case if 'hundred' is found
+				 	num = num + (temp*100)-temp;	#previously found value of temp is multiplied by a hundred then subtracted by temp
+				 elif others.index(word) == 1:
+				 	num = num*1000;
+				 else:
+				 	num = num*1000000;
+				 #end of else statement
+			#end of elif statement
+		#end of for loop
+		
+		if num > 1000000:
+			print("\nNumber out of range!");
+		elif num >= 1:
+			print("\nConversion: %d" %num);
+		#end of elif statement
+	#end of else statement
+#End of wordsToNum function
 
 
 #-------------------------------------------------------------------------------------------------------------
 #Accepts two arguments: the first argument is the number in word form (from zero to 1 million)
 #and the second argument isany of the following: JPY, PHP, USD.
 #The function returns the number in words to its numerical form with a prefix of the currency
-def wordsToCurency():
+def wordsToCurrency():
 	print("Words to currency");
 
 
@@ -91,22 +137,28 @@ def printMenu():
 		choice = int(input("Enter choice: "));
 
 		if choice == 1:
-			num = int(input("\nEnter number a number from 0 to 100000: "));
+			num = int(input("\nEnter a number from 0 to 100000: "));
 			
 			if(num >= 0 and num <= 1000000):	#checks if the input number is within the range of 0 to 1000000
+				print("\nConversion: ");
 				numToWords(num);
 			else:
 				print("\nNumber not from 0 to 1000000!");
 			#end else statment
-		#end of if statement
+			
 		elif choice == 2:
-			wordsToNum();
+			word = input("\nEnter a number(in word form): ");
+			wordsToNum(word);
+			
 		elif choice == 3:
-			wordsToCurreny();
+			wordsToCurrency();
+			
 		elif choice == 4:
 			numberDelimited();
+			
 		elif choice == 0:
 			print("\nProgram Terminated...");
+			
 		else:
 			print("\nInvalid input!");
 		#end else statement
