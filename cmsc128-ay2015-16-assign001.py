@@ -1,5 +1,3 @@
-from itertools import cycle;
-
 #Accepts a whole number from zero(0) to 1 million(1000000 - without commas) and prints the number in word form
 def	numToWords(num):
 	ones = ['','one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
@@ -112,7 +110,7 @@ def wordsToCurrency(word, currency):
 	if currency == 'JPY' or currency == 'PHP' or currency == 'USD':
 		print("\nConversion: %s" % (currency + str(num)));
 	else:
-		print("\nCurrency not of scope!")
+		print("\nCurrency not of scope!");
 	#end of if statement
 #End of wordsToCurrency function
 	
@@ -121,8 +119,14 @@ def wordsToCurrency(word, currency):
 #Accepts three arguments: the first is the number from zero to 1 miliion,
 #the second is the delimiter to be used (single character only)
 #and third, the number of jumps when the delimiter will appear (from right most going to left most digit)
-def numberDelimited():
-	print("Number delimited");
+def numberDelimited(num, delimiter, jumps):
+	num = str(num);	#converts int to string
+	digits = list(map(str, num));	#splits the number into digits and stores it
+	index = len(num);	#gets the length of the number
+	digits.insert(index-jumps, delimiter);	#insert delimiter into the jumps index from the right
+	
+	print(''.join(digits));	#prints a string in which the elements of the list has been joined by a space
+#End of numberDelimited function
 
 
 #-------------------------------------------------------------------------------------------------------------
@@ -160,11 +164,16 @@ def printMenu():
 			
 		elif choice == 3:
 			word = input("\nEnter a number(in word form): ");
-			currency = input("\nEnter currency(JPY, PHP, USD): ");
+			currency = input("Enter currency(JPY, PHP, USD): ");
 			wordsToCurrency(word, currency);
 			
 		elif choice == 4:
-			numberDelimited();
+			num = input("\nEnter a number from 0 to 100000: ");
+			delimiter = input("Enter delimiter(single character only): ");
+			jumps = int(input("Enter number of jumps: "));
+			
+			print("\nOutput: ");
+			numberDelimited(num, delimiter, jumps);
 			
 		elif choice == 0:
 			print("\nProgram Terminated...");
