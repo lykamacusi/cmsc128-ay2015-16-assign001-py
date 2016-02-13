@@ -1,6 +1,52 @@
 #Accepts a whole number from zero(0) to 1 million(1000000 - without commas) and prints the number in word form
-def	numToWords():
-	print("Number to words");
+def	numToWords(num):
+	ones = ['','one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+	teens = ['','eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+	tens = ['', 'ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+	thousands = ['', 'thousand', 'million'];
+	words = [];	#empty list for storing the string conversion
+	
+	if num == 0:
+		words.append('zero');
+	else:
+		number = str(num);	#converts int to string
+		numberlen = len(number);	#gets the length of the number
+		grp = int((numberlen+2)/3);	#how many groups of threes are there(e.g. 1234 -> grp = 2)
+									#it's like separating the number with comma(s)(e.g. 1,234)
+		number = number.zfill(grp*3);	#pads number on the left with zeros to fill the width(e.g. 001234)
+		
+		for i in range(grp):	#loops for grp times and increments by 1
+			hund = int(number[i*3]);
+			ten = int(number[(i*3)+1]);
+			o = int(number[(i*3)+2]);
+			grp = int(grp-1);
+			
+			if hund >= 1:
+				words.append(ones[hund]);
+				words.append('hundred');
+			#end of if statement
+			
+			if ten > 1:
+				words.append(tens[ten]);
+				if o >= 1:
+					words.append(ones[o]);
+			elif ten == 1:
+				if o >= 1:	#for cases like eleven, twelve, thirteen and so on
+					words.append(teens[o]);
+				else:	#for cases like twenty, thirty, fourty and so on
+					words.append(tens[ten]);
+			else:
+				if o >= 1:
+					words.append(ones[o]);
+			#end of else statement
+			
+			if (grp >= 1) and ((hund+ten+o) > 0):	#checks if the number is in the thousands or millions
+				words.append(thousands[grp]);
+			#end of if statement
+		#end of for loop
+	#end of else statement
+	
+	print(' '.join(words));	#prints a string in which the elements of the list has been joined by a space
 
 
 #-------------------------------------------------------------------------------------------------------------
@@ -31,8 +77,8 @@ def numberDelimited():
 def printMenu():
 	choice = 5;	#initialize choice to 5
 	
-	while(choice != 0):	#while choice is not equal to 0
-		print("***********************************");
+	while(choice != 0):	#while user has not chosen to exit, printMenu will continue to loop
+		print("\n***********************************");
 		print("*                                 *");
 		print("*     [ 1 ] Number to words       *");
 		print("*     [ 2 ] Words to number       *");
@@ -42,19 +88,29 @@ def printMenu():
 		print("*                                 *");
 		print("***********************************");
 	
-		choice = int(input("Enter choice: ")) #asks what the user wants to do
+		choice = int(input("Enter choice: "));
 
 		if choice == 1:
-			numToWords();	#calls the number to words function
+			num = int(input("\nEnter number a number from 0 to 100000: "));
+			
+			if(num >= 0 and num <= 1000000):	#checks if the input number is within the range of 0 to 1000000
+				numToWords(num);
+			else:
+				print("\nNumber not from 0 to 1000000!");
+			#end else statment
+		#end of if statement
 		elif choice == 2:
-			wordsToNum();	#calls the words to number function
+			wordsToNum();
 		elif choice == 3:
-			wordsToCurreny();	#calls the words to currency function
+			wordsToCurreny();
 		elif choice == 4:
-			numberDelimited();	#calls the number delimited function
+			numberDelimited();
 		elif choice == 0:
 			print("\nProgram Terminated...");
 		else:
-			print("Invalid input!");
+			print("\nInvalid input!");
+		#end else statement
+	#end of while loop
+#End of printMenu function
 	
 printMenu();
