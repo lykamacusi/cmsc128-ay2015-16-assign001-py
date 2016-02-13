@@ -64,7 +64,7 @@ def wordsToNum(word):
 	num = 0;	#initialize num to 0
 	
 	if word == 'zero':
-		print("\nConversion: %d" % num);
+		return num;
 	else:
 		temp = 0;	#temporary variable for storage of words found in ones
 		for word in words:	#loops through all the words in the list
@@ -96,7 +96,7 @@ def wordsToNum(word):
 		if num > 1000000:
 			print("\nNumber out of range!");
 		elif num >= 1:
-			print("\nConversion: %d" %num);
+			return num;
 		#end of elif statement
 	#end of else statement
 #End of wordsToNum function
@@ -106,9 +106,16 @@ def wordsToNum(word):
 #Accepts two arguments: the first argument is the number in word form (from zero to 1 million)
 #and the second argument isany of the following: JPY, PHP, USD.
 #The function returns the number in words to its numerical form with a prefix of the currency
-def wordsToCurrency():
-	print("Words to currency");
-
+def wordsToCurrency(word, currency):
+	num = wordsToNum(word);
+	
+	if currency == 'JPY' or currency == 'PHP' or currency == 'USD':
+		print("\nConversion: %s" % (currency + str(num)));
+	else:
+		print("\nCurrency not of scope!")
+	#end of if statement
+#End of wordsToCurrency function
+	
 
 #-------------------------------------------------------------------------------------------------------------
 #Accepts three arguments: the first is the number from zero to 1 miliion,
@@ -148,10 +155,13 @@ def printMenu():
 			
 		elif choice == 2:
 			word = input("\nEnter a number(in word form): ");
-			wordsToNum(word);
+			num = wordsToNum(word);
+			print("\nConversion: %d" %num);
 			
 		elif choice == 3:
-			wordsToCurrency();
+			word = input("\nEnter a number(in word form): ");
+			currency = input("\nEnter currency(JPY, PHP, USD): ");
+			wordsToCurrency(word, currency);
 			
 		elif choice == 4:
 			numberDelimited();
